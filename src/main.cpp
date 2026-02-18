@@ -1,13 +1,13 @@
 #include <WiFi.h>
 // #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
-#include "LittleFS.h" // Or #include "SPIFFS.h" for SPIFFS
 #include <ArduinoJson.h>
 #include <Arduino.h>
 #include "index_html.h"
 #include "Operator.h"
 #include <vector>
 #include <cstdlib> // Required header for atoi()
+#include <SPIFFS.h>
 
 std::vector<Operator> operators;
 
@@ -36,6 +36,17 @@ void loadWebsite() {
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
       request->send(200, "text/html", index_html);
     });
+}
+
+void loadFiles() {
+  // load css
+  server.on("/css/bootstrap.min.css", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/css/bootstrap.min.css", "text/css");
+  });
+  // load js
+  server.on("/js/bootstrap.min.js", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/js/bootstrap.min.js");
+  });
 }
 
 void printOperators() {
@@ -267,6 +278,11 @@ void setup() {
   Serial.begin(115200);
   delay(1000);
 
+  if(!SPIFFS.begin(true)) {
+    Serial.println("An error has occurred mounting file system");
+    return;
+  }
+
   operators.push_back(Operator(1, "Lain Iwakura", "MP5N", "Navi"));
   operators.push_back(Operator(2, "Ocelot", "SAA", "Metal Gear Ray"));
   operators.push_back(Operator(3, "XOF Operator", "MAC-11", "Uh-60"));
@@ -277,8 +293,8 @@ void setup() {
   // Connecting to the Network
   ////////////////////////////
   // Get our network name and credentials
-  const String ssid = "xxx";
-  const String password = "xxx";
+  const String ssid = "xxxx";
+  const String password = "xxxx";
 
     // Connect to the Wifi Network
   Serial.println();
@@ -301,6 +317,7 @@ void setup() {
   // Load index.html
   //////////////////
   loadWebsite();
+  loadFiles();
 
   ///////////////
   // GET Requests

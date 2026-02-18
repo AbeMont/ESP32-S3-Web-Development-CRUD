@@ -7,9 +7,10 @@ const char index_html[] PROGMEM = R"=====(
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Development ESP32</title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
 </head>
 <body>
-    <style>
+    <!-- <style>
         body {
             background-color: black;
             font-family: 'Courier New', Courier, monospace;
@@ -43,18 +44,51 @@ const char index_html[] PROGMEM = R"=====(
             padding: 0.5rem 1rem;
             margin-top: 8px;
         }
-    </style>
-    <h1>Web Development C++ </h1>
-
-    <div class="content">
-        <button id="btn0" class="btn" onclick="postOperators()">Get Operators</button>
-        <button id="btn1" class="btn" onclick="getSnakeData()">Get Snake Data</button>
-        <button id="btn2" class="btn" onclick="postData()">Post Data</button>
-        <button id="btn3" class="btn" onclick="getOperatorById(2)">Find Operator</button>
-        <button id="btn4" class="btn" onclick="deleteOperatorbyId(3)">Delete Operator</button>
-        <button id="btn4" class="btn" onclick="updateOperatorById(1)">Update Operator</button>
+    </style> -->
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Web Development C++ </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="content">
+                    <button id="btn0" class="btn btn-primary mb-1" onclick="postOperators()">Get Operators</button>
+                    <button id="btn1" class="btn btn-primary mb-1" onclick="getSnakeData()">Get Snake Data</button>
+                    <button id="btn2" class="btn btn-success mb-1" onclick="postData()">Post Data</button>
+                    <button id="btn3" class="btn btn-primary mb-1" onclick="getOperatorById(2)">Find Operator</button>
+                    <button id="btn4" class="btn btn-danger mb-1" onclick="deleteOperatorbyId(3)">Delete Operator</button>
+                    <button id="btn4" class="btn btn-warning mb-1" onclick="updateOperatorById(1)">Update Operator</button>
+                </div>
+            </div>
+            <div class="col-12">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Launch demo modal
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <script src="/js/bootstrap.min.js"></script>
     <script>
         ////////////////
         // GET Requests
