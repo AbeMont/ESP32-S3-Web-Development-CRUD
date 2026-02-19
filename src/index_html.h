@@ -48,41 +48,57 @@ const char index_html[] PROGMEM = R"=====(
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h1>Web Development C++ </h1>
+                <h1 class="my-4">Web Development C++ </h1>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <button id="btn0" class="btn btn-primary w-100" onclick="postOperators()">Get Operators</button>
+                </div>
+                <div class="col-md-4">
+                    <button id="btn1" class="btn btn-primary w-100" onclick="getSnakeData()">Get Snake Data</button>
+                </div>
+                <div class="col-md-4">
+                    <button id="btn3" class="btn btn-primary w-100" onclick="getOperatorById(2)">Find Operator</button>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <button id="btn2" class="btn btn-success w-100" onclick="postData()">Post Data</button>
+                </div>
+                <div class="col-md-4">
+                    <button id="btn4" class="btn btn-warning w-100" onclick="updateOperatorById(1)">Update Operator</button>
+                </div>
+                <div class="col-md-4">
+                    <button id="btn4" class="btn btn-danger w-100" onclick="deleteOperatorbyId(3)">Delete Operator</button>
+                </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-12">
-                <div class="content">
-                    <button id="btn0" class="btn btn-primary mb-1" onclick="postOperators()">Get Operators</button>
-                    <button id="btn1" class="btn btn-primary mb-1" onclick="getSnakeData()">Get Snake Data</button>
-                    <button id="btn2" class="btn btn-success mb-1" onclick="postData()">Post Data</button>
-                    <button id="btn3" class="btn btn-primary mb-1" onclick="getOperatorById(2)">Find Operator</button>
-                    <button id="btn4" class="btn btn-danger mb-1" onclick="deleteOperatorbyId(3)">Delete Operator</button>
-                    <button id="btn4" class="btn btn-warning mb-1" onclick="updateOperatorById(1)">Update Operator</button>
-                </div>
-            </div>
-            <div class="col-12">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <div class="col-md-4 offset-md-4">
+                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Launch demo modal
                 </button>
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Operator Data can go here
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        ...
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                    </div>
-                </div>
                 </div>
             </div>
         </div>
