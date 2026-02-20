@@ -113,7 +113,7 @@ const char index_html[] PROGMEM = R"=====(
         async function getSnakeData() {
             console.log("Get Snake Data");
 
-            const url = "/getSankeData";
+            const url = "/getSnakeData";
 
             try {
                 const response = await fetch(url);

@@ -33,12 +33,14 @@ Operator* getOperatorbyId(std::vector<Operator>& operators, int targetId) {
 }
 
 void removeOperatorById(std::vector<Operator>& operators, int targetId) {
-    // Pre-C++20
-    auto it = operators.erase(std::remove_if(operators.begin(), operators.end(), [&targetId](const Operator& obj) {
-        Serial.println(obj.id == targetId);
-        return obj.id == targetId;
-    }));
-    operators.end();
+    // std::remove_if shifts elements to be kept to the front and returns an iterator 
+    // to the new logical end of the remaining elements.
+    auto it = std::remove_if(operators.begin(), operators.end(), [&targetId](const Operator& obj) { 
+            return obj.id == targetId; 
+        });
+
+    // vector::erase then removes the elements from the new logical end to the actual end.
+    operators.erase(it, operators.end());
 }
 
 Operator* updateOperatorById(std::vector<Operator>& operators, 

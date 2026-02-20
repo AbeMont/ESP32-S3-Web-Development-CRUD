@@ -8,6 +8,7 @@
 #include <vector>
 #include <cstdlib> // Required header for atoi()
 #include <SPIFFS.h>
+#include "getRequests/getRequests.h"
 
 std::vector<Operator> operators;
 
@@ -63,23 +64,6 @@ void printOperators() {
     Serial.println(operators[i].metalGear);
     Serial.println("-------------------");
   }
-}
-
-void getSnakeData() {
-  server.on("/getSankeData", HTTP_GET, [](AsyncWebServerRequest *request){
-    StaticJsonDocument<128> doc;
-
-    doc["name"] = "Solid Snake";
-    doc["weapon"] = "Mk.21 SOCOM Pistol";
-    doc["metalGear"] = "Metal Gear Rex";
-
-    String jsonResponse;
-    serializeJson(doc, jsonResponse);
-
-    Serial.println(jsonResponse);
-
-    request->send(200, "application/json",jsonResponse);
-  });
 }
 
 void getOperators() {
@@ -322,9 +306,9 @@ void setup() {
   ///////////////
   // GET Requests
   ///////////////
-  getSnakeData();
   getOperators();
   getOperatorById();
+  setup_get_request_routes(server);
 
   ///////////////
   // POST Request
