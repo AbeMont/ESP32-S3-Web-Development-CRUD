@@ -39,17 +39,6 @@ void loadWebsite() {
     });
 }
 
-void loadFiles() {
-  // load css
-  server.on("/css/bootstrap.min.css", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(SPIFFS, "/css/bootstrap.min.css", "text/css");
-  });
-  // load js
-  server.on("/js/bootstrap.min.js", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(SPIFFS, "/js/bootstrap.min.js");
-  });
-}
-
 void printOperators() {
   // Push to our C++ Operators Array
   for (int i = 0; i < operators.size(); i++) {
@@ -301,7 +290,6 @@ void setup() {
   // Load index.html
   //////////////////
   loadWebsite();
-  loadFiles();
 
   ///////////////
   // GET Requests
