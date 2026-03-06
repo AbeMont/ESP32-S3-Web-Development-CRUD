@@ -18,8 +18,8 @@ public:
     Operator() : id(0), name("Jack"), weapon("Famas"), metalGear("None") {}
 };
 
-Operator* getOperatorbyId(std::vector<Operator>& operators, int targetId) {
-    auto it = std::find_if(operators.begin(), operators.end(), [&targetId](const Operator& obj) {
+Operator* getOperatorbyId(std::vector<Operator> &operators, int targetId) {
+    auto it = std::find_if(operators.begin(), operators.end(), [&targetId](const Operator &obj) {
         return obj.id == targetId;
     });
     // Check if a matching object was found
@@ -32,10 +32,10 @@ Operator* getOperatorbyId(std::vector<Operator>& operators, int targetId) {
     }
 }
 
-void removeOperatorById(std::vector<Operator>& operators, int targetId) {
+void removeOperatorById(std::vector<Operator> &operators, int targetId) {
     // std::remove_if shifts elements to be kept to the front and returns an iterator 
     // to the new logical end of the remaining elements.
-    auto it = std::remove_if(operators.begin(), operators.end(), [&targetId](const Operator& obj) { 
+    auto it = std::remove_if(operators.begin(), operators.end(), [&targetId](const Operator &obj) { 
             return obj.id == targetId; 
         });
 
@@ -43,13 +43,13 @@ void removeOperatorById(std::vector<Operator>& operators, int targetId) {
     operators.erase(it, operators.end());
 }
 
-Operator* updateOperatorById(std::vector<Operator>& operators, 
+Operator* updateOperatorById(std::vector<Operator> &operators, 
     int targetId, 
     String updatedName,
     String updatedWeapon,
     String updatedMetalgear) {
     // Use reference (&) to modify the actual object in the vector
-    auto operatorObj = std::find_if(operators.begin(), operators.end(), [&](const Operator& obj){
+    auto operatorObj = std::find_if(operators.begin(), operators.end(), [&](const Operator &obj){
         return obj.id == targetId;
     });
 
