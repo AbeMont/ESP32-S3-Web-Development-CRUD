@@ -14,34 +14,84 @@ std::vector<Operator> operators;
 #define serverPort 3000
 AsyncWebServer server(serverPort);
 
-void printNetworkInit() {
-  Serial.println("");
-  Serial.println("WiFi connected.");
-  Serial.print("IP address: ");
-  Serial.println (WiFi.localIP());
-  Serial.print("Port: ");
-  Serial.println(serverPort);
-  Serial.print("URL: ");
-  Serial.print(WiFi.localIP());
-  Serial.print(":");
-  Serial.println(serverPort);
+void printNetworkInit();
+
+void printOperators(std::vector<Operator> operatorsArr);
+
+void getOperators();
+
+void getOperatorById();
+
+void postData();
+
+void deleteOperatorbyId();
+
+void updateOperatorById();
+
+void setup() {
+  // Initialize serial communication
+  Serial.begin(115200);
+  delay(1000);
+
+  operators.push_back(Operator(1, "Lain Iwakura", "MP5N", "Navi"));
+  operators.push_back(Operator(2, "Ocelot", "SAA", "Metal Gear Ray"));
+  operators.push_back(Operator(3, "XOF Operator", "MAC-11", "Uh-60"));
+
+  printOperators(operators);
+
+  /////////////////////////////
+  // Connecting to the Network
+  ////////////////////////////
+  // Get our network name and credentials
+  const String ssid = "xxxx";
+  const String password = "xxxx";
+
+    // Connect to the Wifi Network
+  Serial.println();
+  Serial.println();
+  Serial.println("Connecting to ");
+  Serial.println(ssid);
+
+  WiFi.begin (ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay (500);
+    Serial.print("...");
+  }
+
+  // After successful connection,
+  // Print out ip, port to get url for the browser
+  // and light LED Green
+  printNetworkInit();
+  neopixelWrite(RGB_BUILTIN, 0, 30, 0);
+
+  ///////////////
+  // GET Requests
+  ///////////////
+  getOperators();
+  getOperatorById();
+  setup_get_request_routes(server);
+
+  ///////////////
+  // POST Request
+  ///////////////
+  postData();
+
+  //////////////////
+  // DELETE Requests
+  //////////////////
+  deleteOperatorbyId();
+
+  ///////////////
+  // PUT Requests
+  ///////////////
+  updateOperatorById();
+
+  // Begin Sever
+  server.begin();
 }
 
-void printOperators() {
-  // Push to our C++ Operators Array
-  for (int i = 0; i < operators.size(); i++) {
-    Serial.println();
-    Serial.print("id: ");
-    Serial.println(operators[i].id);
-    Serial.print("Name: ");
-    Serial.println(operators[i].name);
-    Serial.print("Weapon: ");
-    Serial.println(operators[i].weapon);
-    Serial.print("MetalGear: ");
-    Serial.println(operators[i].metalGear);
-    Serial.println("-------------------");
-  }
-}
+void loop() { }
 
 void getOperators() {
   server.on("/getOperators", HTTP_GET, [](AsyncWebServerRequest *request){
@@ -63,6 +113,35 @@ void getOperators() {
     serializeJson(operatorsDoc, jsonResponse);
     request->send(200, "application/json",jsonResponse);
   });
+}
+
+void printNetworkInit() {
+  Serial.println("");
+  Serial.println("WiFi connected.");
+  Serial.print("IP address: ");
+  Serial.println (WiFi.localIP());
+  Serial.print("Port: ");
+  Serial.println(serverPort);
+  Serial.print("URL: ");
+  Serial.print(WiFi.localIP());
+  Serial.print(":");
+  Serial.println(serverPort);
+}
+
+void printOperators(std::vector<Operator> operatorsArr) {
+  // Push to our C++ Operators Array
+  for (Operator op : operatorsArr) {
+    Serial.println();
+    Serial.print("id: ");
+    Serial.println(op.id);
+    Serial.print("Name: ");
+    Serial.println(op.name);
+    Serial.print("Weapon: ");
+    Serial.println(op.weapon);
+    Serial.print("MetalGear: ");
+    Serial.println(op.metalGear);
+    Serial.println("-------------------");
+  }
 }
 
 void getOperatorById() {
@@ -233,71 +312,6 @@ void updateOperatorById() {
     }
   });
 }
-
-void setup() {
-  // Initialize serial communication
-  Serial.begin(115200);
-  delay(1000);
-
-  operators.push_back(Operator(1, "Lain Iwakura", "MP5N", "Navi"));
-  operators.push_back(Operator(2, "Ocelot", "SAA", "Metal Gear Ray"));
-  operators.push_back(Operator(3, "XOF Operator", "MAC-11", "Uh-60"));
-
-  printOperators();
-
-  /////////////////////////////
-  // Connecting to the Network
-  ////////////////////////////
-  // Get our network name and credentials
-  const String ssid = "xxxx";
-  const String password = "xxxx";
-
-    // Connect to the Wifi Network
-  Serial.println();
-  Serial.println();
-  Serial.println("Connecting to ");
-  Serial.println(ssid);
-
-  WiFi.begin (ssid, password);
-
-  while (WiFi.status() != WL_CONNECTED) {
-    delay (500);
-    Serial.print("...");
-  }
-
-  // After successful connection,
-  // Print out ip, port to get url for the browser
-  // and light LED Green
-  printNetworkInit();
-  neopixelWrite(RGB_BUILTIN, 0, 30, 0);
-
-  ///////////////
-  // GET Requests
-  ///////////////
-  getOperators();
-  getOperatorById();
-  setup_get_request_routes(server);
-
-  ///////////////
-  // POST Request
-  ///////////////
-  postData();
-
-  //////////////////
-  // DELETE Requests
-  //////////////////
-  deleteOperatorbyId();
-
-  ///////////////
-  // PUT Requests
-  ///////////////
-  updateOperatorById();
-
-  // Begin Sever
-  server.begin();
-}
-
-void loop() { }
 
 
 // Example Fix (Capture by Value)
