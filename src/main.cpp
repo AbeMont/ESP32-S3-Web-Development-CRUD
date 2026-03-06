@@ -3,11 +3,9 @@
 #include <ESPAsyncWebServer.h>
 #include <ArduinoJson.h>
 #include <Arduino.h>
-#include "index_html.h"
 #include "Operator.h"
 #include <vector>
 #include <cstdlib> // Required header for atoi()
-#include <SPIFFS.h>
 #include "getRequests/getRequests.h"
 
 std::vector<Operator> operators;
@@ -27,16 +25,6 @@ void printNetworkInit() {
   Serial.print(WiFi.localIP());
   Serial.print(":");
   Serial.println(serverPort);
-}
-
-// Main Website
-void loadWebsite() {
-    Serial.println("Loading index.html...");
-    neopixelWrite(RGB_BUILTIN, 0, 30, 0);
-     // Loads index.html
-    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-      request->send(200, "text/html", index_html);
-    });
 }
 
 void printOperators() {
@@ -251,11 +239,6 @@ void setup() {
   Serial.begin(115200);
   delay(1000);
 
-  if(!SPIFFS.begin(true)) {
-    Serial.println("An error has occurred mounting file system");
-    return;
-  }
-
   operators.push_back(Operator(1, "Lain Iwakura", "MP5N", "Navi"));
   operators.push_back(Operator(2, "Ocelot", "SAA", "Metal Gear Ray"));
   operators.push_back(Operator(3, "XOF Operator", "MAC-11", "Uh-60"));
@@ -284,12 +267,9 @@ void setup() {
 
   // After successful connection,
   // Print out ip, port to get url for the browser
+  // and light LED Green
   printNetworkInit();
-
-  //////////////////
-  // Load index.html
-  //////////////////
-  loadWebsite();
+  neopixelWrite(RGB_BUILTIN, 0, 30, 0);
 
   ///////////////
   // GET Requests
