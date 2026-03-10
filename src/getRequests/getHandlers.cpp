@@ -33,7 +33,7 @@ void getCss(AsyncWebServerRequest *request) {
     request->send(SPIFFS, "/css/bootstrap.min.css", "text/css");
 }
 
-void setup_get_request_routes(AsyncWebServer& server) {
+void setup_get_request_routes(AsyncWebServer &server) {
     // Loads our main index.html
     server.on("/", HTTP_GET, loadIndexHtml);
     server.on("/getSnakeData", HTTP_GET, getSnakeData);
