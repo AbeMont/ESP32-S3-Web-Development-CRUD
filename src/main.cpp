@@ -1,4 +1,3 @@
-#include <WiFi.h>
 #include <ESPAsyncWebServer.h>
 #include <ArduinoJson.h>
 #include <Arduino.h>
@@ -7,14 +6,13 @@
 #include <cstdlib> // Required header for atoi()
 #include "getRequests/getRequests.h"
 #include "printStatements/printStatements.h"
+#include "networkConnection/networkConnection.h"
 
 std::vector<Operator> operators;
 
 // Create AsyncWebServer object on port 80
 int serverPort = 3000;
 AsyncWebServer server(serverPort);
-
-void printNetworkInit();
 
 void getOperators();
 
@@ -40,27 +38,8 @@ void setup() {
   /////////////////////////////
   // Connecting to the Network
   ////////////////////////////
-  // Get our network name and credentials
-  const String ssid = "xxxx";
-  const String password = "xxxx";
-
-    // Connect to the Wifi Network
-  Serial.println();
-  Serial.println();
-  Serial.println("Connecting to ");
-  Serial.println(ssid);
-
-  WiFi.begin (ssid, password);
-
-  while (WiFi.status() != WL_CONNECTED) {
-    delay (500);
-    Serial.print("...");
-  }
-
-  // After successful connection,
-  // Print out ip, port to get url for the browser
-  // and light LED Green
-  printNetworkInit();
+  connectToNetwork();
+  printNetworkInit(serverPort);
   neopixelWrite(RGB_BUILTIN, 0, 30, 0);
 
   ///////////////
@@ -111,19 +90,6 @@ void getOperators() {
     serializeJson(operatorsDoc, jsonResponse);
     request->send(200, "application/json",jsonResponse);
   });
-}
-
-void printNetworkInit() {
-  Serial.println("");
-  Serial.println("WiFi connected.");
-  Serial.print("IP address: ");
-  Serial.println (WiFi.localIP());
-  Serial.print("Port: ");
-  Serial.println(serverPort);
-  Serial.print("URL: ");
-  Serial.print(WiFi.localIP());
-  Serial.print(":");
-  Serial.println(serverPort);
 }
 
 void getOperatorById() {
