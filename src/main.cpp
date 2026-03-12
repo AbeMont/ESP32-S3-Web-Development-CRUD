@@ -33,17 +33,17 @@ void setup() {
 
   // GET Requests
   getOperators(server, operators);
-  getOperatorById(server, operators);
+  getOperatorByIdHandler(server, operators);
   setup_get_request_routes(server);
 
   // POST Request
   postData(server, operators);
 
   // DELETE Requests
-  deleteOperatorbyId(server, operators);
+  deleteOperatorbyIdHandler(server, operators);
 
   // PUT Requests
-  updateOperatorById(server, operators);
+  updateOperatorByIdHandler(server, operators);
 
   // Begin Sever
   server.begin();

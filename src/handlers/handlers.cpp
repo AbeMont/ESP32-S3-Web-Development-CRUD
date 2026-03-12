@@ -12,6 +12,52 @@
 //   });
 // }
 
+Operator* getOperatorbyId(std::vector<Operator> &operators, int targetId) {
+    auto it = std::find_if(operators.begin(), operators.end(), [targetId](const Operator &obj) {
+        return obj.id == targetId;
+    });
+    // Check if a matching object was found
+    if (it != operators.end()) {
+        // Return the pointer (Operator*) to the found object
+        return &(*it);
+    } else {
+        // Return nullptr if not found
+        return nullptr;
+    }
+}
+
+void deleteOperatorById(std::vector<Operator> &operators, int targetId) {
+    // std::remove_if shifts elements to be kept to the front and returns an iterator 
+    // to the new logical end of the remaining elements.
+    auto it = std::remove_if(operators.begin(), operators.end(), [targetId](const Operator &obj) { 
+        return obj.id == targetId; 
+    });
+
+    // vector::erase then removes the elements from the new logical end to the actual end.
+    operators.erase(it, operators.end());
+}
+
+Operator* updateOperatorById(std::vector<Operator> &operators, 
+    int targetId, 
+    String updatedName,
+    String updatedWeapon,
+    String updatedMetalgear) {
+    // Use reference (&)in &obj to modify the actual object in the vector
+    auto operatorObj = std::find_if(operators.begin(), operators.end(), [targetId](const Operator &obj){
+        return obj.id == targetId;
+    });
+
+    if (operatorObj != operators.end()) {
+        operatorObj->name = updatedName;
+        operatorObj->weapon = updatedWeapon;
+        operatorObj->metalGear = updatedMetalgear;
+        // Return the pointer (Operator*) to the updated object
+        return &(*operatorObj);
+    } else {
+        return nullptr;
+    }
+}
+
 void getOperators(AsyncWebServer &server, std::vector<Operator> &operators) {
   server.on("/getOperators", HTTP_GET, [&operators](AsyncWebServerRequest *request){
     StaticJsonDocument<512> operatorsDoc;
@@ -34,7 +80,7 @@ void getOperators(AsyncWebServer &server, std::vector<Operator> &operators) {
   });
 }
 
-void getOperatorById(AsyncWebServer &server, std::vector<Operator> &operators) {
+void getOperatorByIdHandler(AsyncWebServer &server, std::vector<Operator> &operators) {
     server.on("/getOperatorById", HTTP_GET, [&operators](AsyncWebServerRequest *request){
 
         if (request->hasParam("id")) {
@@ -114,7 +160,7 @@ void postData(AsyncWebServer &server, std::vector<Operator> &operators) {
   });
 };
 
-void deleteOperatorbyId(AsyncWebServer &server, std::vector<Operator> &operators) {
+void deleteOperatorbyIdHandler(AsyncWebServer &server, std::vector<Operator> &operators) {
   server.on("/deleteOperatorbyId", HTTP_DELETE, [&operators](AsyncWebServerRequest *request){
 
     if (request->hasParam("id")) {
@@ -124,7 +170,7 @@ void deleteOperatorbyId(AsyncWebServer &server, std::vector<Operator> &operators
       int id = atoi(operatorIdParam.c_str());
 
       // Remove Operator By Id
-      removeOperatorById(operators,id);
+      deleteOperatorById(operators,id);
 
       // Return New Array to response (May need to create a separate function)
       StaticJsonDocument<512> operatorsDoc;
@@ -150,7 +196,7 @@ void deleteOperatorbyId(AsyncWebServer &server, std::vector<Operator> &operators
   });
 };
 
-void updateOperatorById(AsyncWebServer &server, std::vector<Operator> &operators) {
+void updateOperatorByIdHandler(AsyncWebServer &server, std::vector<Operator> &operators) {
     server.on("/updateOperatorById", HTTP_PUT, [](AsyncWebServerRequest *request){
         Serial.println("Update Method");
         }, NULL, [&operators](AsyncWebServerRequest *request, 

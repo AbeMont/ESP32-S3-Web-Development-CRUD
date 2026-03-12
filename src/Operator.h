@@ -26,16 +26,6 @@ class Operator {
 
 };
 
-Operator* getOperatorbyId(std::vector<Operator> &operators, int targetId);
-
-void removeOperatorById(std::vector<Operator> &operators, int targetId);
-
-Operator* updateOperatorById(std::vector<Operator> &operators, 
-    int targetId, 
-    String updatedName,
-    String updatedWeapon,
-    String updatedMetalgear);
-
 #endif
 
 // Struct Method
