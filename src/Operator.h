@@ -1,3 +1,7 @@
+// This fixes the error: redefinition of 'class Operator' 
+#ifndef OPERATOR_H
+#define OPERATOR_H
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -15,6 +19,11 @@ class Operator {
 
         Operator(int id, String name, String  weapon, String  metalGear);
 
+        int getId();
+        String getName();
+        String getWeapon();
+        String getMetalGear();
+
 };
 
 Operator* getOperatorbyId(std::vector<Operator> &operators, int targetId);
@@ -27,6 +36,7 @@ Operator* updateOperatorById(std::vector<Operator> &operators,
     String updatedWeapon,
     String updatedMetalgear);
 
+#endif
 
 // Struct Method
 

@@ -8,6 +8,22 @@ Operator::Operator(int id, String name, String  weapon, String metalGear){
     this->metalGear = metalGear;
 }
 
+int Operator::getId() {
+    return this->id;
+}
+
+String Operator::getName() {
+    return this->name;
+}
+
+String Operator::getWeapon() {
+    return this->weapon;
+}
+
+String Operator::getMetalGear() {
+    return this->metalGear;
+};
+
 Operator* getOperatorbyId(std::vector<Operator> &operators, int targetId) {
     auto it = std::find_if(operators.begin(), operators.end(), [targetId](const Operator &obj) {
         return obj.id == targetId;

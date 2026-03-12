@@ -1,5 +1,4 @@
 #include <WiFi.h>
-// #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 #include <ArduinoJson.h>
 #include <Arduino.h>
@@ -7,16 +6,15 @@
 #include <vector>
 #include <cstdlib> // Required header for atoi()
 #include "getRequests/getRequests.h"
+#include "printStatements/printStatements.h"
 
 std::vector<Operator> operators;
 
 // Create AsyncWebServer object on port 80
-#define serverPort 3000
+int serverPort = 3000;
 AsyncWebServer server(serverPort);
 
 void printNetworkInit();
-
-void printOperators(std::vector<Operator> operatorsArr);
 
 void getOperators();
 
@@ -126,22 +124,6 @@ void printNetworkInit() {
   Serial.print(WiFi.localIP());
   Serial.print(":");
   Serial.println(serverPort);
-}
-
-void printOperators(std::vector<Operator> operatorsArr) {
-  // Push to our C++ Operators Array
-  for (Operator op : operatorsArr) {
-    Serial.println();
-    Serial.print("id: ");
-    Serial.println(op.id);
-    Serial.print("Name: ");
-    Serial.println(op.name);
-    Serial.print("Weapon: ");
-    Serial.println(op.weapon);
-    Serial.print("MetalGear: ");
-    Serial.println(op.metalGear);
-    Serial.println("-------------------");
-  }
 }
 
 void getOperatorById() {
