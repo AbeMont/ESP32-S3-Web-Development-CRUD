@@ -1,5 +1,17 @@
 #include "handlers.h"
 
+// Example Fix (Capture by Value)
+// void setupHandler() {
+//   String myVariable = "Hello"; 
+
+//   // Capture 'myVariable' by value using [myVariable]
+//   server.on("/somepath", [myVariable]() {
+//     // myVariable is a local copy inside the lambda
+//     Serial.println(myVariable);
+//     // You can also capture all used variables by value with [=]
+//   });
+// }
+
 void getOperators(AsyncWebServer &server, std::vector<Operator> &operators) {
   server.on("/getOperators", HTTP_GET, [&operators](AsyncWebServerRequest *request){
     StaticJsonDocument<512> operatorsDoc;

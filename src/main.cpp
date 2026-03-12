@@ -61,14 +61,3 @@ void setup() {
 
 void loop() { }
 
-// Example Fix (Capture by Value)
-// void setupHandler() {
-//   String myVariable = "Hello"; 
-
-//   // Capture 'myVariable' by value using [myVariable]
-//   server.on("/somepath", [myVariable]() {
-//     // myVariable is a local copy inside the lambda
-//     Serial.println(myVariable);
-//     // You can also capture all used variables by value with [=]
-//   });
-// }
