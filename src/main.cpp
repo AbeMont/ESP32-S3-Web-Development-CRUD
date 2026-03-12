@@ -26,33 +26,23 @@ void setup() {
 
   printOperators(operators);
 
-  /////////////////////////////
   // Connecting to the Network
-  ////////////////////////////
   connectToNetwork();
   printNetworkInit(serverPort);
   neopixelWrite(RGB_BUILTIN, 0, 30, 0);
 
-  ///////////////
   // GET Requests
-  ///////////////
   getOperators(server, operators);
   getOperatorById(server, operators);
   setup_get_request_routes(server);
 
-  ///////////////
   // POST Request
-  ///////////////
   postData(server, operators);
 
-  //////////////////
   // DELETE Requests
-  //////////////////
   deleteOperatorbyId(server, operators);
 
-  ///////////////
   // PUT Requests
-  ///////////////
   updateOperatorById(server, operators);
 
   // Begin Sever
