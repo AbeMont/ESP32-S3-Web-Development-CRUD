@@ -6,7 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include <optional>
-#include<WString.h>
+#include <WString.h>
 
 class Operator {
     private:
