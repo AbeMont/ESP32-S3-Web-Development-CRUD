@@ -1,4 +1,5 @@
 #include <ESPAsyncWebServer.h>
+#include <cstdlib> // Required header for atoi()
 #include <ArduinoJson.h>
 #include "Operator.h"
 

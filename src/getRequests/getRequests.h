@@ -1,5 +1,4 @@
 #include <ESPAsyncWebServer.h>
-#include <Arduino.h>
 #include <ArduinoJson.h>
 #include <SPIFFS.h>
 #include "index_html.h"

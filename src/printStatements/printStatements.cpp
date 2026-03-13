@@ -1,5 +1,4 @@
 #include "printStatements.h"
-#include <Arduino.h>
 
 void printOperators(std::vector<Operator> &operatorsArr) {
   // Push to our C++ Operators Array

@@ -23,23 +23,6 @@ class Operator {
         String getName();
         String getWeapon();
         String getMetalGear();
-
 };
 
 #endif
-
-// Struct Method
-
-// struct Operator {
-//     int id;
-//     String name;
-//     String weapon;
-//     String metalGear;
-
-//     Operator(int i, String n, String w, String m) : id(i), name(n), weapon(w), metalGear(m) {}
-
-//     // Constructor
-//     // Default constructor is also a good practice if you need to create an empty object
-//     Operator() : id(0), name(""), weapon(""), metalGear("") {}
-// };
-

@@ -1,14 +1,18 @@
 #include <ESPAsyncWebServer.h>
 #include <Arduino.h>
-#include "Operator.h"
 #include <vector>
-#include <cstdlib> // Required header for atoi()
+#include "Operator.h"
 // Header Files
 #include "getRequests/getRequests.h"
 #include "printStatements/printStatements.h"
 #include "networkConnection/networkConnection.h"
 #include "handlers/handlers.h"
 
+// You can define a std::vector inside setup() or loop(), but if you do, the vector is treated 
+// as a local variable, meaning it is created and destroyed every time that function runs.
+// Defining a vector outside of setup() and loop() (globally) is generally preferred because 
+// it provides persistence (data stays between loops), consistent memory management, 
+// and scope accessibility across your entire sketch
 std::vector<Operator> operators;
 
 // Create AsyncWebServer object on port 80
