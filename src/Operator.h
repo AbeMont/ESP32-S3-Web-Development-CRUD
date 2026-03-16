@@ -2,10 +2,6 @@
 #ifndef OPERATOR_H
 #define OPERATOR_H
 
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <optional>
 #include <WString.h>
 
 class Operator {
