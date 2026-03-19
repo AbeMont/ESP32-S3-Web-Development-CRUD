@@ -20,14 +20,14 @@ void connectToNetwork() {
 }
 
 void printNetworkInit(int serverPort) {
-  Serial.println("");
-  Serial.println("WiFi connected.");
-  Serial.print("IP address: ");
-  Serial.println (WiFi.localIP());
-  Serial.print("Port: ");
-  Serial.println(serverPort);
-  Serial.print("URL: ");
-  Serial.print(WiFi.localIP());
-  Serial.print(":");
-  Serial.println(serverPort);
+    Serial.println("");
+    Serial.println("WiFi connected.");
+    Serial.print("IP address: ");
+    Serial.println (WiFi.localIP());
+    Serial.print("Port: ");
+    Serial.println(serverPort);
+    Serial.print("URL: ");
+    Serial.print(WiFi.localIP());
+    Serial.print(":");
+    Serial.println(serverPort);
 }

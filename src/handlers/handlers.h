@@ -11,8 +11,8 @@ Operator* updateOperatorById(std::vector<Operator> &operators,
     String updatedWeapon,
     String updatedMetalgear);
 
-void getOperators(AsyncWebServer &server, std::vector<Operator> &operators);
+void getOperatorsHandler(AsyncWebServer &server, std::vector<Operator> &operators);
 void getOperatorByIdHandler(AsyncWebServer &server, std::vector<Operator> &operators);
-void postData(AsyncWebServer &server, std::vector<Operator> &operators);
+void postDataHandler(AsyncWebServer &server, std::vector<Operator> &operators);
 void deleteOperatorbyIdHandler(AsyncWebServer &server, std::vector<Operator> &operators);
 void updateOperatorByIdHandler(AsyncWebServer &server, std::vector<Operator> &operators);

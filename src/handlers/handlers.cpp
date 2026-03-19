@@ -58,7 +58,7 @@ Operator* updateOperatorById(std::vector<Operator> &operators,
     }
 }
 
-void getOperators(AsyncWebServer &server, std::vector<Operator> &operators) {
+void getOperatorsHandler(AsyncWebServer &server, std::vector<Operator> &operators) {
   server.on("/getOperators", HTTP_GET, [&operators](AsyncWebServerRequest *request){
     StaticJsonDocument<512> operatorsDoc;
     JsonArray dataArray = operatorsDoc.to<JsonArray>();
@@ -111,7 +111,7 @@ void getOperatorByIdHandler(AsyncWebServer &server, std::vector<Operator> &opera
     });
 };
 
-void postData(AsyncWebServer &server, std::vector<Operator> &operators) {
+void postDataHandler(AsyncWebServer &server, std::vector<Operator> &operators) {
   server.on("/post-json-data", HTTP_POST, [](AsyncWebServerRequest *request) {
     Serial.println("POST Test...");
     }, NULL, [&operators](AsyncWebServerRequest *request, 

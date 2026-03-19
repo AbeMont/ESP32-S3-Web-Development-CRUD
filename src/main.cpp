@@ -27,6 +27,7 @@ void setup() {
   operators.push_back(Operator(1, "Lain Iwakura", "MP5N", "Navi"));
   operators.push_back(Operator(2, "Ocelot", "SAA", "Metal Gear Ray"));
   operators.push_back(Operator(3, "XOF Operator", "MAC-11", "Uh-60"));
+  operators.push_back(Operator(4, "Motoko kusanagi", "M9", "Takicoma Unit"));
 
   printOperators(operators);
 
@@ -36,12 +37,12 @@ void setup() {
   neopixelWrite(RGB_BUILTIN, 0, 30, 0);
 
   // GET Requests
-  getOperators(server, operators);
+  getOperatorsHandler(server, operators);
   getOperatorByIdHandler(server, operators);
-  setup_get_request_routes(server);
+  setupGetRequestRoutes(server);
 
   // POST Request
-  postData(server, operators);
+  postDataHandler(server, operators);
 
   // DELETE Requests
   deleteOperatorbyIdHandler(server, operators);
