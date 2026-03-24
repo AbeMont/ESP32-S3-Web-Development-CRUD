@@ -17,13 +17,9 @@ Operator* getOperatorbyId(std::vector<Operator> &operators, int targetId) {
         return obj.id == targetId;
     });
     // Check if a matching object was found
-    if (it != operators.end()) {
-        // Return the pointer (Operator*) to the found object
-        return &(*it);
-    } else {
-        // Return nullptr if not found
-        return nullptr;
-    }
+    // Return the pointer (Operator*) -> &(*it) to the found object
+    // Return nullptr if not found
+    return it != operators.end() ? &(*it) : nullptr;
 }
 
 void deleteOperatorById(std::vector<Operator> &operators, int targetId) {
@@ -60,7 +56,8 @@ Operator* updateOperatorById(std::vector<Operator> &operators,
 
 void getOperatorsHandler(AsyncWebServer &server, std::vector<Operator> &operators) {
   server.on("/getOperators", HTTP_GET, [&operators](AsyncWebServerRequest *request){
-    StaticJsonDocument<512> operatorsDoc;
+    // As the operators vector grows, this value needs to get bigger
+    StaticJsonDocument<640> operatorsDoc;
     JsonArray dataArray = operatorsDoc.to<JsonArray>();
 
     for (const auto& item : operators) {
