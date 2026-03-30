@@ -10,41 +10,6 @@ const char index_html[] PROGMEM = R"=====(
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
 </head>
 <body>
-    <!-- <style>
-        body {
-            background-color: black;
-            font-family: 'Courier New', Courier, monospace;
-            color: lime;
-            margin: 0;
-        }
-
-        h1 {
-            font-weight: lighter;
-            margin-bottom: 8px;
-        }
-
-        p {
-            margin: 0;
-            font-size: 32px;
-        }
-
-        span {
-            font-size: 25px;
-        }
-
-        .cards {
-            display: flex;
-            justify-content: space-evenly;
-        }
-
-        .btn {
-            background: none;
-            border: 1px solid lime;
-            color: lime;
-            padding: 0.5rem 1rem;
-            margin-top: 8px;
-        }
-    </style> -->
     <div class="container">
         <div class="row">
             <div class="col-12">

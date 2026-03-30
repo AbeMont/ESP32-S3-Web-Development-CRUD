@@ -13,11 +13,14 @@
 // }
 
 Operator* getOperatorbyId(std::vector<Operator> &operators, int targetId) {
-    auto it = std::find_if(operators.begin(), operators.end(), [targetId](const Operator &obj) {
+    auto it = std::find_if(operators.begin(), operators.end(), [targetId](const Operator& obj) {
         return obj.id == targetId;
     });
     // Check if a matching object was found
     // Return the pointer (Operator*) -> &(*it) to the found object
+    // Why not just return -- it -- instead of &(*it)? Thats because
+    // it is an iterator type, not the Operator* pointer the function
+    // expects to return
     // Return nullptr if not found
     return it != operators.end() ? &(*it) : nullptr;
 }
@@ -25,7 +28,7 @@ Operator* getOperatorbyId(std::vector<Operator> &operators, int targetId) {
 void deleteOperatorById(std::vector<Operator> &operators, int targetId) {
     // std::remove_if shifts elements to be kept to the front and returns an iterator 
     // to the new logical end of the remaining elements.
-    auto it = std::remove_if(operators.begin(), operators.end(), [targetId](const Operator &obj) { 
+    auto it = std::remove_if(operators.begin(), operators.end(), [targetId](const Operator& obj) { 
         return obj.id == targetId; 
     });
 
@@ -39,7 +42,7 @@ Operator* updateOperatorById(std::vector<Operator> &operators,
     String updatedWeapon,
     String updatedMetalgear) {
     // Use reference (&)in &obj to modify the actual object in the vector
-    auto operatorObj = std::find_if(operators.begin(), operators.end(), [targetId](const Operator &obj){
+    auto operatorObj = std::find_if(operators.begin(), operators.end(), [targetId](const Operator& obj){
         return obj.id == targetId;
     });
 
