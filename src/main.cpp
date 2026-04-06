@@ -3,10 +3,10 @@
 #include <vector>
 #include "Operator.h"
 // Header Files
-#include "getRequests/getRequests.h"
-#include "printStatements/printStatements.h"
-#include "networkConnection/networkConnection.h"
-#include "handlers/handlers.h"
+#include "getRequests.h"
+#include "printStatements.h"
+#include "networkConnection.h"
+#include "handlers.h"
 
 // You can define a std::vector inside setup() or loop(), but if you do, the vector is treated 
 // as a local variable, meaning it is created and destroyed every time that function runs.
