@@ -7,11 +7,11 @@
 class RFIDModule {
 
     public:
-        uint8_t SS_PIN ; // SDA PIN
-        uint8_t SCK_PIN ;
-        uint8_t MOSI_PIN ;
-        uint8_t MISO_PIN ;
-        uint8_t RST_PIN ;
+        uint8_t SS_PIN; // SDA PIN
+        uint8_t SCK_PIN;
+        uint8_t MOSI_PIN;
+        uint8_t MISO_PIN;
+        uint8_t RST_PIN;
         MFRC522 mfrc522;
 
         RFIDModule(            
@@ -26,6 +26,7 @@ class RFIDModule {
         void RFIDAttach();
         virtual bool readCard();
         virtual bool newCardPresent();
+        String getUID();
 
         ~RFIDModule();
 

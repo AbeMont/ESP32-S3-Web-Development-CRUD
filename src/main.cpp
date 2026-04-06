@@ -65,16 +65,6 @@ void loop() {
   if(!rfid.newCardPresent()) return;
   if(!rfid.readCard()) return;
 
-  String uidStr = "";
-
-  for (byte i = 0; i < rfid.mfrc522.uid.size; i++) {
-      if (rfid.mfrc522.uid.uidByte[i] < 0x10) {
-          uidStr += "0";  // leading zero
-      }
-      uidStr += String(rfid.mfrc522.uid.uidByte[i], HEX);
-  }
-
-  uidStr.toUpperCase();  // optional
-  Serial.println(uidStr);
+  Serial.println(rfid.getUID());
 }
 
