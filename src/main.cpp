@@ -7,6 +7,7 @@
 #include "printStatements.h"
 #include "networkConnection.h"
 #include "handlers.h"
+#include "RFIDModule.h"
 
 // You can define a std::vector inside setup() or loop(), but if you do, the vector is treated 
 // as a local variable, meaning it is created and destroyed every time that function runs.
@@ -18,6 +19,9 @@ std::vector<Operator> operators;
 // Create AsyncWebServer object on port 80
 int serverPort = 3000;
 AsyncWebServer server(serverPort);
+
+// Init RFID module
+RFIDModule rfid(4, 5, 6, 7, 15);
 
 void setup() {
   // Initialize serial communication
@@ -50,9 +54,27 @@ void setup() {
   // PUT Requests
   updateOperatorByIdHandler(server, operators);
 
-  // Begin Sever
+  // Begin Server
   server.begin();
+
+  // Begin Card Reader
+  rfid.SPIBegin();
 }
 
-void loop() { }
+void loop() {
+  if(!rfid.newCardPresent()) return;
+  if(!rfid.readCard()) return;
+
+  String uidStr = "";
+
+  for (byte i = 0; i < rfid.mfrc522.uid.size; i++) {
+      if (rfid.mfrc522.uid.uidByte[i] < 0x10) {
+          uidStr += "0";  // leading zero
+      }
+      uidStr += String(rfid.mfrc522.uid.uidByte[i], HEX);
+  }
+
+  uidStr.toUpperCase();  // optional
+  Serial.println(uidStr);
+}
 

@@ -76,6 +76,7 @@ void getOperatorsHandler(AsyncWebServer &server, std::vector<Operator> &operator
 
     String jsonResponse;
     serializeJson(operatorsDoc, jsonResponse);
+    Serial.println(jsonResponse);
     request->send(200, "application/json",jsonResponse);
   });
 }
