@@ -28,6 +28,7 @@ class RFIDModule {
         virtual bool newCardPresent();
         String getUID();
         void rfidAsyncConnect(AsyncEventSource& rfidEvent);
+        void rfidHandler(RFIDModule& rfid, AsyncEventSource& rfidEvent, bool& loggedState);
 
         ~RFIDModule();
 

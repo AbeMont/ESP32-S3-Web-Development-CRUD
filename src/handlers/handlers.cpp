@@ -250,13 +250,3 @@ void updateOperatorByIdHandler(AsyncWebServer &server, std::vector<Operator> &op
         }
   });
 };
-
-void rfidHandler(RFIDModule& rfid, AsyncEventSource& rfidEvent, bool& loggedState) {
-  if(!rfid.newCardPresent()) return;
-  if(!rfid.readCard()) return;
-
-  Serial.println(rfid.getUID());
-  String uid = rfid.getUID();
-  rfidEvent.send(uid.c_str(), "rfidUID");
-  delay(150);
-}
