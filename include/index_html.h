@@ -14,6 +14,7 @@ const char index_html[] PROGMEM = R"=====(
         <div class="row">
             <div class="col-12">
                 <h1 class="my-4">Web Development C++ </h1>
+                <p>RFID: <span id="rfid"></span></p>
             </div>
         </div>
         <div class="mb-3">
@@ -71,6 +72,34 @@ const char index_html[] PROGMEM = R"=====(
 
     <script src="/js/bootstrap.min.js"></script>
     <script>
+
+        var rfid = new EventSource('/rfidEvent');
+
+        //////////////////////////
+        // INITIALIZE RFID EVENTS
+        //////////////////////////
+
+        // The open event fires when a connection to an event source is opened.
+        rfid.addEventListener('open', function(e) {
+            console.log("RFID Connected");
+        }, false);
+
+        rfid.addEventListener('error', function(e) {
+            if (e.target.readyState != EventSource.OPEN) {
+                console.log("Events Disconnected");
+            }
+        }, false);
+
+        // This message comes from rfid.onConnect([](AsyncEventSourceClient
+        rfid.addEventListener('message', function(e) {
+            console.log("message", e.data);
+        }, false);
+
+        rfid.addEventListener('rfidUID', function(e) {
+            document.getElementById("rfid").innerHTML = e.data;
+            console.log("RFID Code: ", e.data);
+        }, false);
+
         ////////////////
         // GET Requests
         ///////////////

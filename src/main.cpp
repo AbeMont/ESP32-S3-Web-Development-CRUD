@@ -1,6 +1,7 @@
 #include <ESPAsyncWebServer.h>
 #include <Arduino.h>
 #include <vector>
+#include <AsyncTCP.h>
 #include "Operator.h"
 // Header Files
 #include "getRequests.h"
@@ -22,6 +23,10 @@ AsyncWebServer server(serverPort);
 
 // Init RFID module
 RFIDModule rfid(4, 5, 6, 7, 15);
+// Create eventsource
+AsyncEventSource rfidEvent("/rfidEvent");
+// login state
+bool loggedIn = false;
 
 void setup() {
   // Initialize serial communication
@@ -54,6 +59,9 @@ void setup() {
   // PUT Requests
   updateOperatorByIdHandler(server, operators);
 
+  // RFID Event
+  server.addHandler(&rfidEvent);
+
   // Begin Server
   server.begin();
 
@@ -62,9 +70,6 @@ void setup() {
 }
 
 void loop() {
-  if(!rfid.newCardPresent()) return;
-  if(!rfid.readCard()) return;
-
-  Serial.println(rfid.getUID());
+  rfidHandler(rfid, rfidEvent);
 }
 

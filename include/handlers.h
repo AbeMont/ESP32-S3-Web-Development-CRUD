@@ -2,6 +2,7 @@
 #include <cstdlib> // Required header for atoi()
 #include <ArduinoJson.h>
 #include "Operator.h"
+#include "RFIDModule.h"
 
 Operator* getOperatorbyId(std::vector<Operator> &operators, int targetId);
 void deleteOperatorById(std::vector<Operator> &operators, int targetId);
@@ -16,3 +17,4 @@ void getOperatorByIdHandler(AsyncWebServer &server, std::vector<Operator> &opera
 void postDataHandler(AsyncWebServer &server, std::vector<Operator> &operators);
 void deleteOperatorbyIdHandler(AsyncWebServer &server, std::vector<Operator> &operators);
 void updateOperatorByIdHandler(AsyncWebServer &server, std::vector<Operator> &operators);
+void rfidHandler(RFIDModule& rfid, AsyncEventSource& rfidEvent);
