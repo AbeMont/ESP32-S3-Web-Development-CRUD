@@ -43,5 +43,17 @@ String RFIDModule::getUID() {
     return uid;
 }
 
+void RFIDModule::rfidAsyncConnect(AsyncEventSource& rfidEvent) {
+    rfidEvent.onConnect([](AsyncEventSourceClient *client){
+    // reconnect a client if they were asleep/inactive
+    if(client->lastId()){
+      Serial.printf("Client reconnected! Last message ID that it got is: %u\n", client->lastId());
+    }
+    // send event with message "RFID READY...", id current millis
+    // and set reconnect delay to 1 second
+    client->send("RFID READY....", NULL, millis(), 10000);
+  });
+}
+
 RFIDModule::~RFIDModule() {
 }

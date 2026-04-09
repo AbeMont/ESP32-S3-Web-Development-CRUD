@@ -3,6 +3,7 @@
 
 #include <SPI.h>
 #include <MFRC522.h>
+#include <AsyncEventSource.h>
 
 class RFIDModule {
 
@@ -23,10 +24,10 @@ class RFIDModule {
         );
 
         void SPIBegin();
-        void RFIDAttach();
         virtual bool readCard();
         virtual bool newCardPresent();
         String getUID();
+        void rfidAsyncConnect(AsyncEventSource& rfidEvent);
 
         ~RFIDModule();
 

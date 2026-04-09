@@ -17,4 +17,4 @@ void getOperatorByIdHandler(AsyncWebServer &server, std::vector<Operator> &opera
 void postDataHandler(AsyncWebServer &server, std::vector<Operator> &operators);
 void deleteOperatorbyIdHandler(AsyncWebServer &server, std::vector<Operator> &operators);
 void updateOperatorByIdHandler(AsyncWebServer &server, std::vector<Operator> &operators);
-void rfidHandler(RFIDModule& rfid, AsyncEventSource& rfidEvent);
+void rfidHandler(RFIDModule& rfid, AsyncEventSource& rfidEvent, bool& loggedState);

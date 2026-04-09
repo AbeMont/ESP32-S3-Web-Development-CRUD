@@ -59,6 +59,9 @@ void setup() {
   // PUT Requests
   updateOperatorByIdHandler(server, operators);
 
+  // RFID Coonect
+  rfid.rfidAsyncConnect(rfidEvent);
+
   // RFID Event
   server.addHandler(&rfidEvent);
 
@@ -70,6 +73,6 @@ void setup() {
 }
 
 void loop() {
-  rfidHandler(rfid, rfidEvent);
+  rfidHandler(rfid, rfidEvent, loggedIn);
 }
 
