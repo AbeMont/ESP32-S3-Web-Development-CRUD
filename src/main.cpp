@@ -27,6 +27,9 @@ RFIDModule rfid(4, 5, 6, 7, 15);
 AsyncEventSource rfidEvent("/rfidEvent");
 // login state
 bool loggedIn = false;
+// Timer variables
+unsigned long lastTime = 0;  
+unsigned long timerDelay = 750;
 
 void setup() {
   // Initialize serial communication
@@ -60,7 +63,7 @@ void setup() {
   updateOperatorByIdHandler(server, operators);
 
   // RFID Connect
-  rfid.rfidAsyncConnect(rfidEvent);
+  rfid.rfidAsyncConnect(rfid, rfidEvent);
 
   // RFID Event
   server.addHandler(&rfidEvent);
@@ -73,6 +76,8 @@ void setup() {
 }
 
 void loop() {
-  rfid.rfidHandler(rfid, rfidEvent, loggedIn);
+  if ((millis() - lastTime) > timerDelay) {
+    rfid.rfidHandler(rfid, rfidEvent, loggedIn);
+  }
 }
 

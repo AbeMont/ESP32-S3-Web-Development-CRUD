@@ -1,4 +1,5 @@
 #include "getRequests.h"
+#include "views/login.h"
 
 void getSnakeData(AsyncWebServerRequest *request) {
     StaticJsonDocument<128> doc;
@@ -29,10 +30,16 @@ void getCss(AsyncWebServerRequest *request) {
     request->send(SPIFFS, "/css/bootstrap.min.css", "text/css");
 }
 
-void setupGetRequestRoutes(AsyncWebServer &server) {
+void getLoginPage(AsyncWebServerRequest *request) {
+    Serial.println("Loading login Page...");
+    request->send(200, "text/plain", login_html);
+}
+
+void setupGetRequestRoutes(AsyncWebServer& server) {
     // Loads our main index.html
     server.on("/", HTTP_GET, loadIndexHtml);
     server.on("/getSnakeData", HTTP_GET, getSnakeData);
+    server.on("/login", HTTP_GET, getLoginPage);
 
     // Load our js & css files
     if(!SPIFFS.begin(true)) {

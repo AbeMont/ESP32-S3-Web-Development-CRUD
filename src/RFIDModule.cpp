@@ -43,11 +43,13 @@ String RFIDModule::getUID() {
     return uid;
 }
 
-void RFIDModule::rfidAsyncConnect(AsyncEventSource& rfidEvent) {
-    rfidEvent.onConnect([](AsyncEventSourceClient *client){
+void RFIDModule::rfidAsyncConnect(RFIDModule& rfid, AsyncEventSource& rfidEvent) {
+    rfidEvent.onConnect([&rfid](AsyncEventSourceClient *client){
     // reconnect a client if they were asleep/inactive
     if(client->lastId()){
       Serial.printf("Client reconnected! Last message ID that it got is: %u\n", client->lastId());
+      // Maybe don't need use of this method in the future
+      rfid.SPIBegin();
     }
     // send event with message "RFID READY...", id current millis
     // and set reconnect delay to 1 second
@@ -62,7 +64,6 @@ void RFIDModule::rfidHandler(RFIDModule& rfid, AsyncEventSource& rfidEvent, bool
     Serial.println(rfid.getUID());
     String uid = rfid.getUID();
     rfidEvent.send(uid.c_str(), "rfidUID");
-    delay(150);
 }
 
 RFIDModule::~RFIDModule() {

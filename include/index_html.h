@@ -67,7 +67,11 @@ const char index_html[] PROGMEM = R"=====(
                     </div>
                 </div>
             </div>
+            <div class="col-md-4">
+                <button id="view-btn" class="btn btn-success w-100" onclick="getView()">Get View</button>
+            </div>
         </div>
+        <div id="view-test"></div>
     </div>
 
     <script src="/js/bootstrap.min.js"></script>
@@ -155,6 +159,20 @@ const char index_html[] PROGMEM = R"=====(
             }
         }
 
+        async function getView() {
+            const url = `login`;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.text();
+                console.log(data);
+                document.getElementById('view-test').innerHTML = data;
+            } catch (error) {
+                console.error("Fetch Error: ", error);
+            }
+        }
         //////////////////
         // Delete Request
         /////////////////
