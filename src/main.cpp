@@ -23,10 +23,14 @@ AsyncWebServer server(serverPort);
 
 // Init RFID module
 RFIDModule rfid(4, 5, 6, 7, 15);
+
 // Create eventsource
 AsyncEventSource rfidEvent("/rfidEvent");
+
 // login state
 bool loggedIn = false;
+bool cardReady = false;
+
 // Timer variables
 unsigned long lastTime = 0;  
 unsigned long timerDelay = 750;
@@ -46,7 +50,7 @@ void setup() {
   // Connecting to the Network
   connectToNetwork();
   printNetworkInit(serverPort);
-  neopixelWrite(RGB_BUILTIN, 0, 30, 0);
+  neopixelWrite(RGB_BUILTIN, 30, 0, 0);
 
   // GET Requests
   getOperatorsHandler(server, operators);
@@ -65,6 +69,9 @@ void setup() {
   // RFID Connect
   rfid.rfidAsyncConnect(rfid, rfidEvent);
 
+  // RFID Ready To Read
+  rfid.rfidReadyToRead(server, cardReady, loggedIn);
+
   // RFID Event
   server.addHandler(&rfidEvent);
 
@@ -77,7 +84,9 @@ void setup() {
 
 void loop() {
   if ((millis() - lastTime) > timerDelay) {
-    rfid.rfidHandler(rfid, rfidEvent, loggedIn);
+    if(cardReady) {
+      rfid.rfidHandler(rfid, rfidEvent, loggedIn);
+    }
   }
 }
 

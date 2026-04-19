@@ -9,260 +9,65 @@ const char index_html[] PROGMEM = R"=====(
     <title>Web Development ESP32</title>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
 </head>
+<style>
+    .spinner-border {
+        --bs-spinner-width: 6rem;
+        --bs-spinner-height: 6rem;
+        --bs-spinner-border-width: 0.5rem;
+        margin: auto;
+        display: flex;
+    }
+</style>
 <body>
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <h1 class="my-4">Web Development C++ </h1>
-                <p>RFID: <span id="rfid"></span></p>
+                <p id="rfid"></p>
+                <p id="userName"></p>
             </div>
         </div>
-        <div class="mb-3">
-            <div class="row">
-                <div class="col-md-4">
-                    <button id="btn0" class="btn btn-primary w-100" onclick="postOperators()">Get Operators</button>
+        <div id="main-content">
+            <div id="login-container">
+                <div class="card w-100 mb-3">
+                    <h3 class="card-header bg-success" style="color: #fff;">Please enter name</h3>
+                    <div class="card-body">
+                        <!-- <p class="card-text">Then Login using card</p> -->
+                        <input id="userInput" class="form-control" type="text" placeholder="Name" aria-label="User Name">
+                        <button id="btn-submit" type="button" class="btn btn-primary mt-3" disabled>Submit</button>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <button id="btn1" class="btn btn-primary w-100" onclick="getSnakeData()">Get Snake Data</button>
-                </div>
-                <div class="col-md-4">
-                    <button id="btn3" class="btn btn-primary w-100" onclick="getOperatorById(2)">Find Operator</button>
-                </div>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="row">
-                <div class="col-md-4">
-                    <button id="btn2" class="btn btn-success w-100" onclick="postData()">Post Data</button>
-                </div>
-                <div class="col-md-4">
-                    <button id="btn4" class="btn btn-warning w-100" onclick="updateOperatorById(1)">Update Operator</button>
-                </div>
-                <div class="col-md-4">
-                    <button id="btn4" class="btn btn-danger w-100" onclick="deleteOperatorbyId(3)">Delete Operator</button>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4 offset-md-4">
-                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Launch demo modal
-                </button>
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="rfid-ready text-center d-none">
+                    <h3 id="readerReadyText" class="card-text"></h3>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-grow text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
                         </div>
-                        <div class="modal-body">
-                            Operator Data can go here
+                        <div class="spinner-grow text-secondary" role="status">
+                        <span class="visually-hidden">Loading...</span>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                        <div class="spinner-grow text-success" role="status">
+                        <span class="visually-hidden">Loading...</span>
                         </div>
+                        <div class="spinner-grow text-danger" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div class="spinner-grow text-warning" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div class="spinner-grow text-info" role="status">
+                        <span class="visually-hidden">Loading...</span>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <button id="view-btn" class="btn btn-success w-100" onclick="getView()">Get View</button>
-            </div>
         </div>
-        <div id="view-test"></div>
     </div>
 
     <script src="/js/bootstrap.min.js"></script>
-    <script>
-
-        var rfid = new EventSource('/rfidEvent');
-
-        //////////////////////////
-        // INITIALIZE RFID EVENTS
-        //////////////////////////
-
-        // The open event fires when a connection to an event source is opened.
-        rfid.addEventListener('open', function(e) {
-            console.log("RFID Connected");
-        }, false);
-
-        rfid.addEventListener('error', function(e) {
-            if (e.target.readyState != EventSource.OPEN) {
-                console.log("Events Disconnected");
-            }
-        }, false);
-
-        // This message comes from rfid.onConnect([](AsyncEventSourceClient
-        rfid.addEventListener('message', function(e) {
-            console.log("message", e.data);
-        }, false);
-
-        rfid.addEventListener('rfidUID', function(e) {
-            document.getElementById("rfid").innerHTML = e.data;
-            console.log("RFID Code: ", e.data);
-        }, false);
-
-        ////////////////
-        // GET Requests
-        ///////////////
-
-        async function getSnakeData() {
-            console.log("Get Snake Data");
-
-            const url = "/getSnakeData";
-
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                console.log(data);
-            } catch (error) {
-                console.error("Fetch Error: ", error);
-            }
-        }
-
-        async function postOperators() {
-            console.log("Operators");
-
-            const url = "/getOperators";
-
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                console.log(data);
-            } catch (error) {
-                console.error("Fetch Error: ", error);
-            }
-        }
-
-        async function getOperatorById(id) {
-            console.log("Find Operator by id");
-
-            const url = `getOperatorById?id=${id}`;
-
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                console.log(data);
-            } catch (error) {
-                console.error("Fetch Error: ", error);
-            }
-        }
-
-        async function getView() {
-            const url = `login`;
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.text();
-                console.log(data);
-                document.getElementById('view-test').innerHTML = data;
-            } catch (error) {
-                console.error("Fetch Error: ", error);
-            }
-        }
-        //////////////////
-        // Delete Request
-        /////////////////
-
-        async function deleteOperatorbyId(id) {
-            const url = `deleteOperatorbyId?id=${id}`;
-
-            try {
-                const response = await fetch(url, {
-                    method: 'DELETE' // Specify the HTTP method
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                console.log(data);
-            } catch (error) {
-                console.error("Fetch Error: ", error);
-            }
-        }
-
-        ///////////////
-        // Post Request
-        ///////////////
-
-        async function postData() {
-            const url = "/post-json-data";
-
-            const dataToSend = {
-                id: 5,
-                name: 'Raiden',
-                weapon: 'M4A1 Assault Rifle',
-                metalGear: 'Metal Gear Ray'
-            };
-
-            fetch(url, {
-                method: 'POST', // Specify the method
-                headers: {
-                    'Content-Type': 'application/json' // Inform the server that the body is JSON
-                },
-                body: JSON.stringify(dataToSend) // Convert the JavaScript object to a JSON string
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json(); // Parse the JSON response from the server
-            })
-            .then(data => {
-                console.log('Success:', data); // Handle the successful response data
-            })
-            .catch(error => {
-                console.error('Error:', error); // Handle any errors during the fetch operation
-            });
-
-        }
-
-        //////////////
-        // Put Request
-        //////////////
-
-        async function updateOperatorById(id) {
-            const url = `updateOperatorById`;
-
-            const dataToSend = {
-                id: id,
-                name: 'Lain',
-                weapon: 'M4A1 Assault Rifle',
-                metalGear: 'Protocol 9'
-            };
-
-            try {
-                const response = await fetch(url, { 
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json' 
-                    },
-                    body: JSON.stringify(dataToSend)
-                });
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                console.log(data);
-            } catch (error) {
-                console.error("Fetch Error: ", error);
-            }
-        }
-    </script>
+    <script src="/js/customEvents.js"></script>
+    <script src="/js/apiExamples.js"></script>
+    <script src="/js/login.js"></script>
 </body>
 </html>
 

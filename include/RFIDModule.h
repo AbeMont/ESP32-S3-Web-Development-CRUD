@@ -29,6 +29,7 @@ class RFIDModule {
         String getUID();
         void rfidAsyncConnect(RFIDModule& rfid, AsyncEventSource& rfidEvent);
         void rfidHandler(RFIDModule& rfid, AsyncEventSource& rfidEvent, bool& loggedState);
+        void rfidReadyToRead(AsyncWebServer &server, bool& rfidReady, bool& loggedState);
 
         ~RFIDModule();
 

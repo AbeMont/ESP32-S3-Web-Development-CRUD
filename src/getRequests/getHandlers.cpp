@@ -22,8 +22,20 @@ void loadIndexHtml(AsyncWebServerRequest *request) {
 }
 
 
-void getJS(AsyncWebServerRequest *request) {
-    request->send(SPIFFS, "/js/bootstrap.min.js");
+void getBootstrapJS(AsyncWebServerRequest *request) {
+    request->send(SPIFFS, "/js/bootstrap.min.js", "application/javascript");
+}
+
+void getApiExamples(AsyncWebServerRequest *request) {
+    request->send(SPIFFS, "/js/apiExamples.js", "application/javascript");
+};
+
+void getCustomEventsJS(AsyncWebServerRequest *request) {
+    request->send(SPIFFS, "/js/customEvents.js", "application/javascript");
+}
+
+void getLoginJS(AsyncWebServerRequest *request) {
+    request->send(SPIFFS, "/js/login.js", "application/javascript");
 }
 
 void getCss(AsyncWebServerRequest *request) {
@@ -46,6 +58,9 @@ void setupGetRequestRoutes(AsyncWebServer& server) {
         Serial.println("An error has occurred mounting file system");
         return;
     }
-    server.on("/js/bootstrap.min.js", HTTP_GET, getJS);
+    server.on("/js/bootstrap.min.js", HTTP_GET, getBootstrapJS);
+    server.on("/js/apiExamples.js", HTTP_GET, getApiExamples);
+    server.on("/js/customEvents.js", HTTP_GET, getCustomEventsJS);
+    server.on("/js/login.js", HTTP_GET, getLoginJS);
     server.on("/css/bootstrap.min.css", HTTP_GET, getCss);
 }

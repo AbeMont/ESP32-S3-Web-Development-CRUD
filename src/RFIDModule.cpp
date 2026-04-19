@@ -1,4 +1,5 @@
 #include "RFIDModule.h"
+#include "views/mainMenu.h"
 
 RFIDModule::RFIDModule(            
     uint8_t ssPin, 
@@ -57,13 +58,51 @@ void RFIDModule::rfidAsyncConnect(RFIDModule& rfid, AsyncEventSource& rfidEvent)
   });
 }
 
+void RFIDModule::rfidReadyToRead(AsyncWebServer& server, bool& rfidReady, bool& loggedState) {
+    server.on("/rfid-ready-to-read", HTTP_POST, [](AsyncWebServerRequest *request) {
+    }, NULL, [&rfidReady, &loggedState](AsyncWebServerRequest *request, 
+        uint8_t *data, 
+        size_t len, 
+        size_t index, 
+        size_t total) {
+
+            String body = "";
+            for (size_t i = 0; i < len; i++) {
+                body += (char)data[i];
+            }
+
+            Serial.println("Received body: " + body);
+
+            if (body == "true") {
+                rfidReady = true;
+                neopixelWrite(RGB_BUILTIN, 60, 30, 0);
+                request->send(200, "text/plain", "Awaiting Card Input...");
+            } else if (body == "false") {
+                rfidReady = false;
+                loggedState = false;
+                neopixelWrite(RGB_BUILTIN, 30, 0, 0);
+                request->send(200, "text/plain", "Blocking Card Input...");
+            } else {
+                request->send(400, "text/plain", "Invalid body");
+            }
+        });
+}
+
 void RFIDModule::rfidHandler(RFIDModule& rfid, AsyncEventSource& rfidEvent, bool& loggedState) {
     if(!rfid.newCardPresent()) return;
     if(!rfid.readCard()) return;
 
     Serial.println(rfid.getUID());
     String uid = rfid.getUID();
-    rfidEvent.send(uid.c_str(), "rfidUID");
+
+    if ((uid == "593A5207" || uid == "0443464AD21D90") && loggedState == false) {
+        loggedState = true;
+
+        rfidEvent.send(uid.c_str(), "rfidUID");
+        rfidEvent.send(mainMenu, "loadLoggedIn");
+        neopixelWrite(RGB_BUILTIN, 0, 30, 0);
+    }
+    
 }
 
 RFIDModule::~RFIDModule() {
