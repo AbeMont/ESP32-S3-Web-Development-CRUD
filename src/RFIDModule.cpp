@@ -81,7 +81,7 @@ void RFIDModule::rfidReadyToRead(AsyncWebServer& server, bool& rfidReady, bool& 
                 rfidReady = false;
                 loggedState = false;
                 neopixelWrite(RGB_BUILTIN, 30, 0, 0);
-                request->send(200, "text/plain", "Blocking Card Input...");
+                request->send(200, "text/plain", "Card reader Inactive");
             } else {
                 request->send(400, "text/plain", "Invalid body");
             }

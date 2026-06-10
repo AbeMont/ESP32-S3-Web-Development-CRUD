@@ -36,57 +36,57 @@ unsigned long lastTime = 0;
 unsigned long timerDelay = 750;
 
 void setup() {
-  // Initialize serial communication
-  Serial.begin(115200);
-  delay(1000);
+    // Initialize serial communication
+    Serial.begin(115200);
+    delay(1000);
 
-  operators.push_back(Operator(1, "Lain Iwakura", "MP5N", "Navi"));
-  operators.push_back(Operator(2, "Ocelot", "SAA", "Metal Gear Ray"));
-  operators.push_back(Operator(3, "XOF Operator", "MAC-11", "Uh-60"));
-  operators.push_back(Operator(4, "Motoko kusanagi", "M9", "Takicoma Unit"));
+    operators.push_back(Operator(1, "Lain Iwakura", "MP5N", "Navi"));
+    operators.push_back(Operator(2, "Ocelot", "SAA", "Metal Gear Ray"));
+    operators.push_back(Operator(3, "XOF Operator", "MAC-11", "Uh-60"));
+    operators.push_back(Operator(4, "Motoko kusanagi", "M9", "Takicoma Unit"));
 
-  printOperators(operators);
+    printOperators(operators);
 
-  // Connecting to the Network
-  connectToNetwork();
-  printNetworkInit(serverPort);
-  neopixelWrite(RGB_BUILTIN, 30, 0, 0);
+    // Connecting to the Network
+    connectToNetwork();
+    printNetworkInit(serverPort);
+    neopixelWrite(RGB_BUILTIN, 30, 0, 0);
 
-  // GET Requests
-  getOperatorsHandler(server, operators);
-  getOperatorByIdHandler(server, operators);
-  setupGetRequestRoutes(server);
+    // GET Requests
+    getOperatorsHandler(server, operators);
+    getOperatorByIdHandler(server, operators);
+    setupGetRequestRoutes(server);
 
-  // POST Request
-  postDataHandler(server, operators);
+    // POST Request
+    postDataHandler(server, operators);
 
-  // DELETE Requests
-  deleteOperatorbyIdHandler(server, operators);
+    // DELETE Requests
+    deleteOperatorbyIdHandler(server, operators);
 
-  // PUT Requests
-  updateOperatorByIdHandler(server, operators);
+    // PUT Requests
+    updateOperatorByIdHandler(server, operators);
 
-  // RFID Connect
-  rfid.rfidAsyncConnect(rfid, rfidEvent);
+    // RFID Connect
+    rfid.rfidAsyncConnect(rfid, rfidEvent);
 
-  // RFID Ready To Read
-  rfid.rfidReadyToRead(server, cardReady, loggedIn);
+    // RFID Ready To Read
+    rfid.rfidReadyToRead(server, cardReady, loggedIn);
 
-  // RFID Event
-  server.addHandler(&rfidEvent);
+    // RFID Event
+    server.addHandler(&rfidEvent);
 
-  // Begin Server
-  server.begin();
+    // Begin Server
+    server.begin();
 
-  // Begin RFID Card Reader
-  rfid.SPIBegin();
+    // Begin RFID Card Reader
+    rfid.SPIBegin();
 }
 
 void loop() {
-  if ((millis() - lastTime) > timerDelay) {
-    if(cardReady) {
-      rfid.rfidHandler(rfid, rfidEvent, loggedIn);
+    if ((millis() - lastTime) > timerDelay) {
+        if(cardReady) {
+        rfid.rfidHandler(rfid, rfidEvent, loggedIn);
+        }
     }
-  }
 }
 
