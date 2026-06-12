@@ -66,7 +66,7 @@ void setup() {
     // PUT Requests
     updateOperatorByIdHandler(server, operators);
 
-    // RFID Connect
+    // RFID Connect Async Custom Event
     rfid.rfidAsyncConnect(rfid, rfidEvent);
 
     // RFID Ready To Read
@@ -85,7 +85,7 @@ void setup() {
 void loop() {
     if ((millis() - lastTime) > timerDelay) {
         if(cardReady) {
-        rfid.rfidHandler(rfid, rfidEvent, loggedIn);
+            rfid.rfidHandler(rfid, rfidEvent, loggedIn);
         }
     }
 }

@@ -6,7 +6,7 @@ var rfid = new EventSource('/rfidEvent');
 
 // The open event fires when a connection to an event source is opened.
 rfid.addEventListener('open', function(e) {
-    console.log("RFID Connected");
+    console.log("Open RFID Custom Events");
 }, false);
 
 rfid.addEventListener('error', function(e) {
