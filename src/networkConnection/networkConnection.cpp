@@ -1,6 +1,6 @@
 #include "networkConnection.h"
 
-void connectToNetwork() {
+void connectToNetwork(int serverPort) {
     // Get our network name and credentials
     const String ssid = "xxxx";
     const String password = "xxxx";
@@ -17,6 +17,9 @@ void connectToNetwork() {
         delay (500);
         Serial.print("...");
     }
+
+    printNetworkInit(serverPort);
+    neopixelWrite(RGB_BUILTIN, 30, 0, 0);
 }
 
 void printNetworkInit(int serverPort) {

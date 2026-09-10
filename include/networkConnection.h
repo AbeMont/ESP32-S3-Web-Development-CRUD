@@ -1,4 +1,4 @@
 #include <WiFi.h>
 
-void connectToNetwork();
-void printNetworkInit(int serverPort);
+void connectToNetwork(int portNumber);
+void printNetworkInit(int portNumber);

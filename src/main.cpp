@@ -48,9 +48,7 @@ void setup() {
     printOperators(operators);
 
     // Connecting to the Network
-    connectToNetwork();
-    printNetworkInit(serverPort);
-    neopixelWrite(RGB_BUILTIN, 30, 0, 0);
+    connectToNetwork(serverPort);
 
     // GET Requests
     getOperatorsHandler(server, operators);
@@ -72,14 +70,14 @@ void setup() {
     // RFID Ready To Read
     rfid.rfidReadyToRead(server, cardReady, loggedIn);
 
+    // Begin RFID Card Reader
+    rfid.SPIBegin();
+
     // RFID Event
     server.addHandler(&rfidEvent);
 
     // Begin Server
     server.begin();
-
-    // Begin RFID Card Reader
-    rfid.SPIBegin();
 }
 
 void loop() {

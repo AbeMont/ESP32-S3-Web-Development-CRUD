@@ -86,29 +86,29 @@ void getOperatorByIdHandler(AsyncWebServer &server, std::vector<Operator> &opera
     server.on("/getOperatorById", HTTP_GET, [&operators](AsyncWebServerRequest *request){
 
         if (request->hasParam("id")) {
-        StaticJsonDocument<128> operatorDoc;
-        String jsonResponse;
+            StaticJsonDocument<128> operatorDoc;
+            String jsonResponse;
 
-        String operatorIdParam = request->getParam("id")->value();
-        // converts string to int
-        int id = atoi(operatorIdParam.c_str());
-        // find operator by id
-        Operator* foundOperator = getOperatorbyId(operators, id);
+            String operatorIdParam = request->getParam("id")->value();
+            // converts string to int
+            int id = atoi(operatorIdParam.c_str());
+            // find operator by id
+            Operator* foundOperator = getOperatorbyId(operators, id);
 
-        if (foundOperator) {
-            operatorDoc["id"] = foundOperator->id;
-            operatorDoc["name"] = foundOperator->name;
-            operatorDoc["weapon"] = foundOperator->weapon;
-            operatorDoc["metalGear"] = foundOperator->metalGear;
+            if (foundOperator) {
+                operatorDoc["id"] = foundOperator->id;
+                operatorDoc["name"] = foundOperator->name;
+                operatorDoc["weapon"] = foundOperator->weapon;
+                operatorDoc["metalGear"] = foundOperator->metalGear;
 
-            serializeJson(operatorDoc, jsonResponse);
-            Serial.println(jsonResponse);
-        } else {
-            operatorDoc["error"] = "Operator does not exist";
-            serializeJson(operatorDoc, jsonResponse);
-            Serial.println(jsonResponse);
-        }
-        request->send(200, "application/json", jsonResponse);
+                serializeJson(operatorDoc, jsonResponse);
+                Serial.println(jsonResponse);
+            } else {
+                operatorDoc["error"] = "Operator does not exist";
+                serializeJson(operatorDoc, jsonResponse);
+                Serial.println(jsonResponse);
+            }
+            request->send(200, "application/json", jsonResponse);
         }
     });
 };
@@ -129,35 +129,35 @@ void postDataHandler(AsyncWebServer &server, std::vector<Operator> &operators) {
     DeserializationError error = deserializeJson(postDoc, data, len);
 
     if (error) {
-      Serial.print(F("deserializeJson() failed: "));
-      Serial.println(error.f_str());
-      request->send(400, "text/plain", "Invalid JSON format");
+        Serial.print(F("deserializeJson() failed: "));
+        Serial.println(error.f_str());
+        request->send(400, "text/plain", "Invalid JSON format");
     } else {
 
-      // Extract data from the JSON object
-      const int   key0 = postDoc["id"];
-      const char* key1 = postDoc["name"];
-      const char* key2 = postDoc["weapon"];
-      const char* key3 = postDoc["metalGear"];
+        // Extract data from the JSON object
+        const int   key0 = postDoc["id"];
+        const char* key1 = postDoc["name"];
+        const char* key2 = postDoc["weapon"];
+        const char* key3 = postDoc["metalGear"];
 
-      // Clear postDoc to create response to be sent back
-      postDoc.clear();
+        // Clear postDoc to create response to be sent back
+        postDoc.clear();
 
-      postDoc["code"] = 200;
-      postDoc["submitted"] = true;
-      postDoc["data"]["id"] = key0;
-      postDoc["data"]["name"] = key1;
-      postDoc["data"]["weapon"] = key2;
-      postDoc["data"]["metalGear"] = key3;
+        postDoc["code"] = 200;
+        postDoc["submitted"] = true;
+        postDoc["data"]["id"] = key0;
+        postDoc["data"]["name"] = key1;
+        postDoc["data"]["weapon"] = key2;
+        postDoc["data"]["metalGear"] = key3;
 
-      // push to C++ Array
-      operators.push_back(Operator(key0, key1, key2, key3));
+        // push to C++ Array
+        operators.push_back(Operator(key0, key1, key2, key3));
 
-      String jsonResponse;
-      serializeJson(postDoc, jsonResponse);
+        String jsonResponse;
+        serializeJson(postDoc, jsonResponse);
 
-      Serial.println(jsonResponse);
-      request->send(200, "application/json", jsonResponse);
+        Serial.println(jsonResponse);
+        request->send(200, "application/json", jsonResponse);
     }
   });
 };
@@ -167,33 +167,33 @@ void deleteOperatorbyIdHandler(AsyncWebServer &server, std::vector<Operator> &op
 
     if (request->hasParam("id")) {
 
-      String operatorIdParam = request->getParam("id")->value();
-      // converts string to int
-      int id = atoi(operatorIdParam.c_str());
+        String operatorIdParam = request->getParam("id")->value();
+        // converts string to int
+        int id = atoi(operatorIdParam.c_str());
 
-      // Remove Operator By Id
-      deleteOperatorById(operators,id);
+        // Remove Operator By Id
+        deleteOperatorById(operators,id);
 
-      // Return New Array to response (May need to create a separate function)
-      StaticJsonDocument<512> operatorsDoc;
-      JsonArray dataArray = operatorsDoc.to<JsonArray>();
+        // Return New Array to response (May need to create a separate function)
+        StaticJsonDocument<512> operatorsDoc;
+        JsonArray dataArray = operatorsDoc.to<JsonArray>();
 
-      // The operators param is from the actual Array defined above
-      for (const auto& item : operators) {
-        // Create a nested object for each item
-        JsonObject obj = dataArray.createNestedObject();
+        // The operators param is from the actual Array defined above
+        for (const auto& item : operators) {
+            // Create a nested object for each item
+            JsonObject obj = dataArray.createNestedObject();
 
-        // Add key-value pairs to the JSON object
-        obj["id"] = item.id;
-        obj["name"] = item.name;
-        obj["weapon"] = item.weapon;
-        obj["metalGear"] = item.metalGear;
-      }
+            // Add key-value pairs to the JSON object
+            obj["id"] = item.id;
+            obj["name"] = item.name;
+            obj["weapon"] = item.weapon;
+            obj["metalGear"] = item.metalGear;
+        }
 
-      String jsonResponse;
-      serializeJson(operatorsDoc, jsonResponse);
+        String jsonResponse;
+        serializeJson(operatorsDoc, jsonResponse);
 
-      request->send(200, "application/json", jsonResponse);
+        request->send(200, "application/json", jsonResponse);
     }
   });
 };
